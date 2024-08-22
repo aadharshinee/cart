@@ -1,37 +1,49 @@
-import React from 'react';
-import blush from '../assets/blush.jpg';
-import eyeliner from '../assets/eyeliner.jpg';
-import eyeshadow from '../assets/eyeshadow.jpg';
-import foundation from '../assets/foundation.jpg';
-import lipstick from '../assets/lipstick.jpg';
-import mascara from '../assets/mascara.jpg';
+import React, { useState } from 'react';
+import blushImage from '../assets/blush.jpg';
+import eyelinerImage from '../assets/eyeliner.jpg';
+import eyeshadowImage from '../assets/eyeshadow.jpg';
+import foundationImage from '../assets/foundation.jpg';
+import lipstickImage from '../assets/lipstick.jpg';
+import mascaraImage from '../assets/mascara.jpg';
 import './ShoppingCart.css';
 
 function Shoppingcart() {
+  const [cart, setCart] = useState([]);
+
   const products = [
-    { name: "Lipstick", cost: 15, image: lipstick },
-    { name: "Foundation", cost: 25, image: foundation },
-    { name: "Mascara", cost: 20, image: mascara },
-    { name: "Blush", cost: 18, image: blush },
-    { name: "Eyeliner", cost: 12, image: eyeliner },
-    { name: "Eyeshadow", cost: 22, image: eyeshadow },
+    { id: 1, name: 'Blush', price: 10, image: blushImage },
+    { id: 2, name: 'Eyeliner', price: 15, image: eyelinerImage },
+    { id: 3, name: 'Eyeshadow', price: 20, image: eyeshadowImage },
+    { id: 4, name: 'Foundation', price: 25, image: foundationImage },
+    { id: 5, name: 'Lipstick', price: 12, image: lipstickImage },
+    { id: 6, name: 'Mascara', price: 18, image: mascaraImage },
   ];
+
+  const addToCart = (product) => {
+    setCart([...cart, product]);
+  };
+
+  const calculateTotal = () => {
+    return cart.reduce((total, product) => total + product.price, 0);
+  };
 
   return (
     <div className="shopping-cart">
-      <h1>Makeup Products</h1>
-      <ul>
-        {products.map((product, index) => (
-          <li key={index} className="product-item">
-            <img src={product.image} alt={product.name} className="product-image" />
-            <div className="product-details">
-              <span>{product.name}</span>
-              <span>${product.cost}</span>
-              <button className="custom-button">Add to Cart</button>
-            </div>
-          </li>
+      <h1>Shopping Cart</h1>
+      <div className="product-list">
+        {products.map((product) => (
+          <div key={product.id} className="product">
+            <img src={product.image} alt={product.name} />
+            <p>{product.name}</p>
+            <p>Price: ${product.price}</p>
+            <button className="custom-button" onClick={() => addToCart(product)}>Add to Cart</button>
+          </div>
         ))}
-      </ul>
+      </div>
+      <div className="cart-summary">
+        <h2>Cart Summary</h2>
+        <p>Total Price: ${calculateTotal()}</p>
+      </div>
     </div>
   );
 }
